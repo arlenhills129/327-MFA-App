@@ -7,10 +7,8 @@ app = create_app()
 def make_shell_context():
     return {'db': app.db, 'User': User, 'Question':Question}
 
-@app.before_request
-def initDB(*args, **kwargs):
-    if app.got_first_request:
-        db.create_all()
+with app.app_context():
+    db.create_all()
 
 
 if __name__ == "__main__":
