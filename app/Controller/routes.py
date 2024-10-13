@@ -20,7 +20,6 @@ def createusertest():
     # Create a user with security questions
     user = User(
         username="johndoe",
-        password_hash="hashedpassword",
         email="john@example.com",
         sec_question1_id=question1.id,
         sec_question1_answer="fido",  # answer for question 1
@@ -29,6 +28,7 @@ def createusertest():
         sec_question3_id=question3.id,
         sec_question3_answer="Herrera"  # Answer for question 3
     )
+    user.set_password("prehashedpassword")
 
     # Add and commit the user
     db.session.add(user)
