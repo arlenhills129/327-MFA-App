@@ -1,0 +1,2 @@
+FLASK_APP=MFAapp.py
+FLASK_DEBUG=1
