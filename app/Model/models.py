@@ -6,27 +6,35 @@ class User(db.Model):
     __tablename__ = 'user'
     id = db.Column(db.Integer, primary_key=True)
     username = db.Column(db.String(60), unique=True)
+
+    #will need to implement hashing
     password_hash = db.Column(db.String(128))
+    
+    #hashing functions go here
+    #def set_password
+    #def get_password
+    #def check_password
+
     email = db.Column(db.String(120), unique=True)
 
-    #One-way relationship to manage security questions
-    security_questions = relationship('UserQuestion')
+    #storing chosen security questions and the respective answers per user
+    #will need to hash answers as well.
+    #i think this current solution doesn't prevent duplicates
+    sec_question1_id = db.Column(db.Integer, ForeignKey('question.id'), nullable=False)
+    sec_question1_answer = db.Column(db.String(200), nullable=False)
+
+    sec_question2_id = db.Column(db.Integer, ForeignKey('question.id'), nullable=False)
+    sec_question2_answer = db.Column(db.String(200), nullable=False)
+
+    sec_question3_id = db.Column(db.Integer, ForeignKey('question.id'), nullable=False)
+    sec_question3_answer = db.Column(db.String(200), nullable=False)
+
+    #relating security questions to questions in the Question table
+    sec_question1 = db.relationship('Question', foreign_keys=[sec_question1_id])
+    sec_question2 = db.relationship('Question', foreign_keys=[sec_question2_id])
+    sec_question3 = db.relationship('Question', foreign_keys=[sec_question3_id])
 
 class Question(db.Model):
     __tablename__ = 'question'
     id = db.Column(db.Integer, primary_key=True)
     sec_question = db.Column(db.String(400), unique=True, nullable = False)
-
-    #no relationship here
-
-#need a one-way relationship between users and questions
-#only want users to access their questions and answers, dont want other models accessing users
-#or chosen questions/answers (no back population)
-class UserQuestion(db.Model):
-    id = db.Column(db.Integer, primary_key=True)
-    user_id = db.Column(db.Integer, ForeignKey('user.id'), nullable=False)
-    question_id = db.Column(db.Integer, ForeignKey('question.id'), nullable=False)
-    answer = db.Column(db.String(200), nullable=False)
-
-    question = relationship('Question')
-    #User has UserQuestion (and answer) has Question
