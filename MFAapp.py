@@ -9,6 +9,15 @@ def make_shell_context():
 
 with app.app_context():
     db.create_all()
+    if Question.query.count() == 0:
+            questions = [{'sec_question':'What was the name of your first pet?'},
+                      {'sec_question':'In what city were you born?'},
+                      {'sec_question':'What is your mother\'s maiden name?'},
+                      {'sec_question':'What was the make and model of your first car?'},
+                      {'sec_question':'What is the name of your elementary school?'}  ]
+            for q in questions:
+                db.session.add(Question(sec_question=q['sec_question']))
+            db.session.commit()
 
 
 if __name__ == "__main__":
