@@ -11,7 +11,8 @@ def create_app(config_class=Config):
     db.init_app(app)
 
     # blueprint registration
-    # blank rn idk what blueprints are
+    from app.Controller.routes import bp_routes as routes
+    app.register_blueprint(routes)
 
 
     if not app.debug and not app.testing:
